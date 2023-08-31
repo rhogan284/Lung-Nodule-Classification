@@ -15,10 +15,6 @@ imageTrain, imageTest, labelsTrain, labelsTest = train_test_split(image_data, la
 labelsTrain = np.argmax(labelsTrain, axis=1)
 labelsTest = np.argmax(labelsTest, axis=1)
 
-print(imageTrain.shape)  # This should print something like (800, 28, 28, 1) assuming you have 1000 samples
-print(labelsTrain.shape)  # This should print something like (800,)
-
-
 def plot_images(images, lables, num_rows, num_cols):
     fig, axes = plt.subplots(num_rows, num_cols, figsize=(num_cols, 1.5 * num_rows))
     for i in range(num_rows * num_cols):
