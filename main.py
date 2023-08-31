@@ -29,7 +29,7 @@ def plot_images(images, lables, num_rows, num_cols):
     plt.show()
 
 
-# plot_images(image_data, labels, 5, 5)
+plot_images(image_data, labels, 5, 5)
 
 model = models.Sequential()
 
