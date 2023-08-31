@@ -1,16 +1,59 @@
-# This is a sample Python script.
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+image_data = np.load('images_data.npy')
+labels = np.load('labels.npy')
+
+image_data = image_data.reshape(image_data.shape[0], 28, 28, 1)
+
+imageTrain, imageTest, labelsTrain, labelsTest = train_test_split(image_data, labels, test_size=0.2)
+
+labelsTrain = np.argmax(labelsTrain, axis=1)
+labelsTest = np.argmax(labelsTest, axis=1)
+
+print(imageTrain.shape)  # This should print something like (800, 28, 28, 1) assuming you have 1000 samples
+print(labelsTrain.shape)  # This should print something like (800,)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def plot_images(images, lables, num_rows, num_cols):
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(num_cols, 1.5 * num_rows))
+    for i in range(num_rows * num_cols):
+        ax = axes[i // num_cols, i % num_cols]
+        ax.imshow(images[i], cmap='gray')
+        ax.set_title(lables[i])
+        ax.axis('off')
+    plt.show()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# plot_images(image_data, labels, 5, 5)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+model = models.Sequential()
+
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10))
+
+model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
+
+history = model.fit(imageTrain, labelsTrain, epochs=20, validation_data=(imageTest, labelsTest))
+
+plt.plot(history.history['accuracy'], label='accuracy')
+plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.ylim([0.5, 1])
+plt.legend(loc='lower right')
+
+test_loss, test_acc = model.evaluate(imageTrain, labelsTrain, verbose=2)
+
+plt.show()
