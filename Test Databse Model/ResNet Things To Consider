@@ -1,0 +1,6 @@
+- Change batch size, 64, 128?
+- Increasing epochs currently not effective
+- Adding extra residual layer - unknown effectiveness
+- Changing stride to 1? Will need to modify number of filters
+- Explore different optimiser algorithms
+- Padding on the images?
