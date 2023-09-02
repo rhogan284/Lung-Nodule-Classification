@@ -58,7 +58,7 @@ x = layers.Dense(1, activation="sigmoid")(x)
 
 model = models.Model(inputs=input_tensor, outputs=x)
 
-model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
+model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=False), metrics=['accuracy'])
 
 history = model.fit(imageTrain, labelsTrain, epochs=15, validation_data=(imageTest, labelsTest))
 
