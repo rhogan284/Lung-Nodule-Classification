@@ -1,17 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as manim
+from skimage.measure import find_contours
+
+import pylidc as pl
+from pylidc.utils import consensus
+
 import pylidc as pl
 
-pid = 'LIDC-IDRI-0001'
-scan = pl.query(pl.Scan).filter(pl.Scan.patient_id == pid).first()
-print(len(scan.annotations))
-nods = scan.cluster_annotations()
+import pylidc as pl
+import matplotlib.pyplot as plt
 
-print("%s has %d nodules." % (scan, len(nods)))
-# => Scan(id=1,patient_id=LIDC-IDRI-0078) has 4 nodules.
+ann = pl.query(pl.Annotation).first()
+vol = ann.scan.to_volume()
 
-for i,nod in enumerate(nods):
-    print("Nodule %d has %d annotations." % (i+1, len(nods[i])))
-# => Nodule 1 has 4 annotations.
-# => Nodule 2 has 4 annotations.
-# => Nodule 3 has 1 annotations.
-# => Nodule 4 has 4 annotations.
-scan.visualize(annotation_groups=nods)
+padding = [(30,10), (10,25), (0,0)]
+
+mask = ann.boolean_mask(pad=padding)
+bbox = ann.bbox(pad=padding)
+
+fig,ax = plt.subplots(1,2,figsize=(5,3))
+
+ax[0].imshow(vol[bbox][:,:,2], cmap=plt.cm.gray)
+ax[0].axis('off')
+
+ax[1].imshow(mask[:,:,2], cmap=plt.cm.gray)
+ax[1].axis('off')
+
+plt.tight_layout()
+plt.show()
