@@ -1,7 +1,9 @@
 import numpy as np
+import pandas as pd
 
 images = np.load('nodule_images.npy')
 labels = np.load('malignancy_scores.npy')
+
 
 unique_values, counts = np.unique(labels, return_counts=True)
 

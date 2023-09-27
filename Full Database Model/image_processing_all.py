@@ -35,6 +35,20 @@ def crop_or_pad_to_center(img, target_size):
     padded = np.pad(cropped, ((pad_y1, pad_y2), (pad_x1, pad_x2)), mode='constant')
     return padded
 
+def hu_to_grayscale(image, window_center, window_width):
+    min_val = window_center - window_width // 2
+    max_val = window_center + window_width // 2
+
+    # Clip the image to the window
+    image = np.clip(image, min_val, max_val)
+
+    # Normalize to 0-255
+    image_normalized = ((image - min_val) / (max_val - min_val)) * 255.0
+
+    # Convert to 8-bit unsigned integer
+    grayscale_image = np.uint8(image_normalized)
+    return grayscale_image
+
 
 all_scans = pl.query(pl.Scan).all()
 
@@ -53,7 +67,11 @@ for scan in all_scans:
 
             if cropped_vol.shape[2] > 0:
                 cropped_img_centered = crop_or_pad_to_center(cropped_vol[:, :, cropped_vol.shape[2] // 2], 52)
-                nodule_images.append(cropped_img_centered)
+                hu_image = np.array(cropped_img_centered)
+                window_center = -550
+                window_width = 1550
+                grayscale_image = hu_to_grayscale(hu_image, window_center, window_width)
+                nodule_images.append(grayscale_image)
                 malignancy = get_most_frequent_malignancy(anns)
                 malignancy_scores.append(malignancy)
                 nod_count += 1

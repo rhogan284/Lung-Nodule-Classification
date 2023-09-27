@@ -9,10 +9,8 @@ from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-image_data = np.load('nodule_images.npy')
-labels = np.load('malignancy_scores.npy')
-print(image_data.shape)
-print(labels.shape)
+image_data = np.load('nodule_images_equal_2.npy')
+labels = np.load('malignancy_scores_equal_2.npy')
 
 image_data = image_data.reshape(image_data.shape[0], 52, 52, 1)
 labels = labels - 1
@@ -58,7 +56,7 @@ model = models.Model(inputs=input_tensor, outputs=x)
 
 model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False), metrics=['accuracy'])
 
-history = model.fit(imageTrain, labelsTrain, epochs=150, validation_data=(imageTest, labelsTest))
+history = model.fit(imageTrain, labelsTrain, epochs=20, validation_data=(imageTest, labelsTest))
 
 plt.plot(history.history['accuracy'], label='accuracy')
 plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
