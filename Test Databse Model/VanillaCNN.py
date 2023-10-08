@@ -29,7 +29,7 @@ model.add(layers.Dense(10))
 
 model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
 
-history = model.fit(imageTrain, labelsTrain, epochs=20, validation_data=(imageTest, labelsTest))
+history = model.fit(imageTrain, labelsTrain, epochs=100, validation_data=(imageTest, labelsTest))
 
 plt.plot(history.history['accuracy'], label='accuracy')
 plt.plot(history.history['val_accuracy'], label = 'val_accuracy')

@@ -51,7 +51,7 @@ def hu_to_grayscale(image, window_center, window_width):
     return grayscale_image
 
 
-patient_id = 'LIDC-IDRI-0078'
+patient_id = 'LIDC-IDRI-0005'
 
 scans_for_first_patient = pl.query(pl.Scan).filter(pl.Scan.patient_id == patient_id).all()
 
