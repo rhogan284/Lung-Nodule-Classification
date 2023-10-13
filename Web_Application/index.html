@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PySide Web App</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>TripleTech TumourThreat</h1>
+    </header>
+    <main>
+        <p>Instructions: </p>
+        <input type="file" id="imageUpload" accept="image/*">
+        <img id="uploadedImage" src="" alt="Uploaded Image">
+        <section id="results">
+
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Agam</p>
+    </footer>
+
+    <script>
+
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const uploadedImage = document.getElementById('uploadedImage');
+            const file = event.target.files[0];
+
+
+        });
+    </script>
+</body>
+</html>
+
+<!--
+if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                uploadedImage.src = '';
+            }
+-->
